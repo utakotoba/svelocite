@@ -1,0 +1,8 @@
+# runtime + dependencies
+node_modules
+
+# preferences
+/.vscode
+
+# os-related
+.DS_Store
