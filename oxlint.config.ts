@@ -10,4 +10,13 @@ export default defineConfig({
     'promise',
     'unicorn',
   ],
+  rules: {
+    'typescript/consistent-type-imports': [
+      'error',
+      {
+        prefer: 'type-imports',
+        fixStyle: 'separate-type-imports',
+      },
+    ],
+  },
 })

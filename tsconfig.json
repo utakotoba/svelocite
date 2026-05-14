@@ -1,13 +1,13 @@
 {
+  "extends": "./.svelte-kit/tsconfig.json",
   "compilerOptions": {
-    "lib": ["esnext", "dom", "dom.iterable", "dom.asynciterable"],
-    "module": "esnext",
-    "target": "esnext",
+    "strict": true,
     "moduleResolution": "bundler",
     "allowJs": false,
     "checkJs": false,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   }
 }

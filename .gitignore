@@ -1,5 +1,10 @@
 # runtime + dependencies
 node_modules
 
+# development
+.output
+/.svelte-kit
+/build
+
 # os-related
 .DS_Store
