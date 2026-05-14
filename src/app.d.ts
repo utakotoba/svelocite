@@ -10,4 +10,11 @@ declare global {
   }
 }
 
+declare namespace svelteHTML {
+  import type { AttributifyAttributes } from '@unocss/preset-attributify'
+
+  // extend html attributes for unocss attributify preset
+  type HTMLAttributes = AttributifyAttributes
+}
+
 export {}
