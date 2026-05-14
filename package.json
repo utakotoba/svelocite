@@ -1,0 +1,16 @@
+{
+  "name": "svelocite",
+  "private": "true",
+  "type": "module",
+  "scripts": {
+    "lint": "oxlint",
+    "fmt": "oxfmt",
+    "lint:fix": "oxlint --fix"
+  },
+  "devDependencies": {
+    "@typescript/native-preview": "latest",
+    "oxfmt": "^0.49.0",
+    "oxlint": "^1.64.0"
+  },
+  "packageManager": "bun@1.3.14"
+}
