@@ -1,6 +1,5 @@
 {
-  "name": "svelocite",
-  "private": "true",
+  "private": true,
   "type": "module",
   "scripts": {
     "lint": "oxlint",
