@@ -2,8 +2,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "lint": "oxlint",
     "fmt": "oxfmt",
+    "lint": "oxlint",
     "lint:fix": "oxlint --fix",
     "check": "svelte-kit sync && svelte-check --tsgo",
     "check:watch": "svelte-kit sync && svelte-check --tsgo --watch",
