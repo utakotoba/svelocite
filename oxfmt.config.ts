@@ -5,9 +5,7 @@ export default defineConfig({
   semi: false,
   singleQuote: true,
   jsdoc: true,
-  sortImports: {
-    order: 'desc',
-  },
+  sortImports: true,
   sortPackageJson: true,
   sortTailwindcss: true,
   svelte: true,

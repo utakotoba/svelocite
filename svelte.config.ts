@@ -1,5 +1,5 @@
-import type { Config } from '@sveltejs/kit'
 import adapter from '@sveltejs/adapter-auto'
+import type { Config } from '@sveltejs/kit'
 
 const config = {
   kit: {

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { baseLocale, locales, localizeHref } from '$lib/paraglide/runtime'
   import { page } from '$app/state'
+  import { baseLocale, locales, localizeHref } from '$lib/paraglide/runtime'
 
   const { origin, pathname } = $derived(page.url)
 
