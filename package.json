@@ -15,6 +15,8 @@
   },
   "devDependencies": {
     "@iconify-json/ri": "^1.2.10",
+    "@inlang/paraglide-js": "^2.18.0",
+    "@inlang/plugin-message-format": "^4.4.0",
     "@sveltejs/adapter-auto": "^7.0.1",
     "@sveltejs/enhanced-img": "^0.10.4",
     "@sveltejs/kit": "^2.59.1",
