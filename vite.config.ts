@@ -1,8 +1,8 @@
-import { paraglideVitePlugin as paraglide } from '@inlang/paraglide-js'
-import { enhancedImages } from '@sveltejs/enhanced-img'
-import { sveltekit } from '@sveltejs/kit/vite'
-import unocss from 'unocss/vite'
 import { defineConfig } from 'vite'
+import unocss from 'unocss/vite'
+import { sveltekit } from '@sveltejs/kit/vite'
+import { enhancedImages } from '@sveltejs/enhanced-img'
+import { paraglideVitePlugin as paraglide } from '@inlang/paraglide-js'
 
 export default defineConfig({
   plugins: [

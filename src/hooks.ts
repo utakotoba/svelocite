@@ -1,5 +1,5 @@
-import { baseLocale, deLocalizeUrl } from '$lib/paraglide/runtime'
 import type { Reroute } from '@sveltejs/kit'
+import { baseLocale, deLocalizeUrl } from '$lib/paraglide/runtime'
 
 export const reroute: Reroute = ({ url }) => {
   const prefix = url.pathname.split('/').filter(Boolean)[0]
