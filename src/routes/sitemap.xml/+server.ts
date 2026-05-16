@@ -1,6 +1,11 @@
 import { baseLocale, locales, localizeUrl } from '$lib/paraglide/runtime'
 import { collectRoutes } from '$lib/server/route-collector'
-import type { SitemapEntry } from '$lib/server/sitemap'
+import {
+  getSitemapOptions,
+  SEO_EXPORT_NAME,
+  type SeoOptions,
+  type SitemapOptions,
+} from '$lib/server/seo'
 import type { RequestHandler } from '@sveltejs/kit'
 import XMLBuilder from 'fast-xml-builder'
 
@@ -12,10 +17,10 @@ const XHTML_XMLNS = 'http://www.w3.org/1999/xhtml'
 
 // MARK: - defaults
 const DEFAULT_CHANGEFREQ = 'weekly' satisfies NonNullable<
-  SitemapEntry['changefreq']
+  SitemapOptions['changefreq']
 >
 const DEFAULT_LASTMOD = new Date().toISOString()
-const DEFAULT_PRIORITY = 0.5 satisfies NonNullable<SitemapEntry['priority']>
+const DEFAULT_PRIORITY = 0.5 satisfies NonNullable<SitemapOptions['priority']>
 
 // MARK: - sitemap builder
 
@@ -27,9 +32,9 @@ const builder = new XMLBuilder({
   suppressEmptyNode: true,
 })
 
-const routes = collectRoutes<SitemapEntry>({
+const routes = collectRoutes<SeoOptions>({
   excludePatterns: EXCLUDE_PATTERNS,
-  exportName: '_sitemap',
+  exportName: SEO_EXPORT_NAME,
 })
 
 type Locale = (typeof locales)[number]
@@ -41,10 +46,10 @@ interface AlternateLink {
 }
 
 interface UrlNode {
-  changefreq: NonNullable<SitemapEntry['changefreq']>
+  changefreq: NonNullable<SitemapOptions['changefreq']>
   lastmod: string
   loc: string
-  priority: NonNullable<SitemapEntry['priority']>
+  priority: NonNullable<SitemapOptions['priority']>
   'xhtml:link': AlternateLink[]
 }
 
@@ -58,8 +63,9 @@ function localizedUrl(origin: string, route: string, locale: Locale): string {
   return localized.href
 }
 
-const formatLastmod = (lastmod: NonNullable<SitemapEntry['lastmod']>): string =>
-  lastmod instanceof Date ? lastmod.toISOString() : lastmod
+const formatLastmod = (
+  lastmod: NonNullable<SitemapOptions['lastmod']>,
+): string => (lastmod instanceof Date ? lastmod.toISOString() : lastmod)
 
 function alternates(origin: string, route: string): AlternateLink[] {
   const link = (hreflang: Locale | 'x-default', href: string) => ({
@@ -80,7 +86,7 @@ function urlNode(
   origin: string,
   route: string,
   locale: Locale,
-  entry?: SitemapEntry,
+  entry?: SitemapOptions,
 ): UrlNode {
   const {
     changefreq = DEFAULT_CHANGEFREQ,
@@ -104,9 +110,12 @@ export const GET: RequestHandler = async ({ url }) => {
     urlset: {
       '@_xmlns': XMLNS,
       '@_xmlns:xhtml': XHTML_XMLNS,
-      url: routes.flatMap(({ exported, route }) =>
-        locales.map((locale) => urlNode(url.origin, route, locale, exported)),
-      ),
+      url: routes.flatMap(({ exported, route }) => {
+        const entry = getSitemapOptions(exported)
+        return entry
+          ? locales.map((locale) => urlNode(url.origin, route, locale, entry))
+          : []
+      }),
     },
   })
 

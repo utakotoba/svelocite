@@ -135,10 +135,13 @@ function collectExport<TExport, TExportName extends string>(
   exportName?: TExportName,
 ): TExport | undefined {
   if (!exportName) return undefined
-  for (const module of modules) {
+
+  for (let i = modules.length - 1; i >= 0; i -= 1) {
+    const module = modules[i]
     const exported = module[exportName]
     if (exported !== undefined) return exported
   }
+
   return undefined
 }
 
