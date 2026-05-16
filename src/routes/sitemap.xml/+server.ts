@@ -16,7 +16,7 @@ const XMLNS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 const XHTML_XMLNS = 'http://www.w3.org/1999/xhtml'
 
 // MARK: - defaults
-const DEFAULT_CHANGEFREQ = 'weekly' satisfies NonNullable<
+const DEFAULT_CHANGEFREQ = 'daily' satisfies NonNullable<
   SitemapOptions['changefreq']
 >
 const DEFAULT_LASTMOD = new Date().toISOString()
