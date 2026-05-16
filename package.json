@@ -24,7 +24,7 @@
     "@typescript/native-preview": "latest",
     "fast-xml-builder": "^1.2.0",
     "oxfmt": "^0.49.0",
-    "oxlint": "^1.64.0",
+    "oxlint": "^1.65.0",
     "picomatch": "^4.0.4",
     "svelte": "^5.55.7",
     "svelte-check": "^4.4.8",
