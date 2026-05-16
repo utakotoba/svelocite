@@ -4,9 +4,20 @@ import type { SitemapEntry } from '$lib/server/sitemap'
 import type { RequestHandler } from '@sveltejs/kit'
 import XMLBuilder from 'fast-xml-builder'
 
+// MARK: - constants
+
 const EXCLUDE_PATTERNS = ['/+error', '/+404']
 const XMLNS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 const XHTML_XMLNS = 'http://www.w3.org/1999/xhtml'
+
+// MARK: - defaults
+const DEFAULT_CHANGEFREQ = 'weekly' satisfies NonNullable<
+  SitemapEntry['changefreq']
+>
+const DEFAULT_LASTMOD = new Date().toISOString()
+const DEFAULT_PRIORITY = 0.5 satisfies NonNullable<SitemapEntry['priority']>
+
+// MARK: - sitemap builder
 
 const builder = new XMLBuilder({
   format: true,
@@ -30,10 +41,10 @@ interface AlternateLink {
 }
 
 interface UrlNode {
-  changefreq?: SitemapEntry['changefreq']
-  lastmod?: string
+  changefreq: NonNullable<SitemapEntry['changefreq']>
+  lastmod: string
   loc: string
-  priority?: SitemapEntry['priority']
+  priority: NonNullable<SitemapEntry['priority']>
   'xhtml:link': AlternateLink[]
 }
 
@@ -47,7 +58,7 @@ function localizedUrl(origin: string, route: string, locale: Locale): string {
   return localized.href
 }
 
-const formatLastmod = (lastmod: SitemapEntry['lastmod']) =>
+const formatLastmod = (lastmod: NonNullable<SitemapEntry['lastmod']>): string =>
   lastmod instanceof Date ? lastmod.toISOString() : lastmod
 
 function alternates(origin: string, route: string): AlternateLink[] {
@@ -71,13 +82,17 @@ function urlNode(
   locale: Locale,
   entry?: SitemapEntry,
 ): UrlNode {
-  const lastmod = formatLastmod(entry?.lastmod)
+  const {
+    changefreq = DEFAULT_CHANGEFREQ,
+    lastmod = DEFAULT_LASTMOD,
+    priority = DEFAULT_PRIORITY,
+  } = entry ?? {}
 
   return {
+    changefreq,
+    lastmod: formatLastmod(lastmod),
     loc: localizedUrl(origin, route, locale),
-    ...(lastmod ? { lastmod } : {}),
-    ...(entry?.changefreq ? { changefreq: entry.changefreq } : {}),
-    ...(entry?.priority !== undefined ? { priority: entry.priority } : {}),
+    priority,
     'xhtml:link': alternates(origin, route),
   }
 }
@@ -101,7 +116,12 @@ export const GET: RequestHandler = async ({ url }) => {
     'X-Content-Type-Options': 'nosniff',
   }
 
-  return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n${body}`, {
-    headers,
-  })
+  return new Response(
+    [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>',
+      body,
+    ].join('\n'),
+    { headers },
+  )
 }
