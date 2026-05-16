@@ -1,19 +1,24 @@
-import type { SitemapConfig } from 'super-sitemap'
-
 // MARK: - types
 
-type PathObj = ReturnType<
-  Exclude<SitemapConfig['processPaths'], undefined>
->[number]
+type ChangeFrequency =
+  | 'always'
+  | 'hourly'
+  | 'daily'
+  | 'weekly'
+  | 'monthly'
+  | 'yearly'
+  | 'never'
 
-/**
- * Per-route configuration of sitemap in generation.
- *
- * Slice of {@link PathObj} in `super-sitemap` package
- */
-export type SitemapEntry = Omit<PathObj, 'path' | 'lastmod' | 'alternates'> & {
-  // allow built-in `Date` for convince
+/** Per-route configuration for sitemap generation. */
+export interface SitemapEntry {
+  /** Expected cadence for content changes on this route. */
+  changefreq?: ChangeFrequency
+
+  /** Last meaningful content update for this route. */
   lastmod?: Date | string
+
+  /** Relative route importance from `0.0` to `1.0`. */
+  priority?: number
 }
 
 // MARK: - helpers
@@ -22,6 +27,7 @@ export type SitemapEntry = Omit<PathObj, 'path' | 'lastmod' | 'alternates'> & {
  * Type helper to create {@link SitemapEntry} object.
  *
  * @param cfg Valid config of {@link SitemapEntry}
+ * @returns The provided sitemap config
  */
 export function defineSitemapEntry(cfg: SitemapEntry): SitemapEntry {
   return cfg
